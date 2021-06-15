@@ -22,13 +22,12 @@
 <h2>W7</h2>
 <p><span></span></p>
 <p>設定Heroku同步github。</p>
-<p>須先完成上週的步驟一到步驟三，才能繼續接下來的動作</p>
-<p><span><span style="background-color: #ffff00;">步驟四</span>:</span><span> </span>(<span>修改命令搜尋路徑</span>) 修改隨身系統的啟動批次檔案, 讓 Windows 的命令視窗中可以執行 heroku.exe, 或者稱作"設法將 heroku.exe 所在目錄位置, 設為 Windows 搜尋路徑之一".</p>
-<p>重新啟動已經納入可執行 heroku.exe 的隨身碟 start_ipv6.bat 或 start_ipv4.bat</p>
-<p><span><span style="background-color: #ffff00;">步驟五</span>:</span><span> </span>(<span>測試 heroku 執行</span>) 測試是否能夠在修改後的命令列中執行 heroku.exe, 輸入 heroku version 若回應所使用的版本表示上述路徑設定已經成功.</p>
-<p><span><span style="background-color: #ffff00;">步驟六</span>:</span><span> </span>(<span>設定 heroku 代理主機</span>) 先前我們已經知道網路的應用包含 client 與 server, 不同 client 採用不同的 proxy 設定與 server 連線, 其中 firefox 作為 WWW 網路協定的 client, 有其自己的網路 Proxy 設定, 也可以直接使用操作系統的 Proxy 設定.</p>
-<p>Chrome 作為 WWW 網路協定的 client, 目前 Windows 下的最新版, 只能使用操作系統的 Proxy 設定.</p>
-<p>而 git 作為 git client 與 github server 連線的 Proxy 設定, 則寫在 y:\home_ipv6 下的 .giconfig 中,  以 git config --global http.proxy "http://your_proxy:port" 進行設定.</p>
+<p>須先完成上週的步驟一到步驟三，才能繼續接下來的動作。</p>
+<p><span><span style="background-color: #ffff00;">步驟四</span>:</span><span> </span>(<span>修改命令搜尋路徑</span>) 修改隨身系統的啟動批次檔案， 讓 Windows 的命令視窗中可以執行 heroku.exe，或稱作"設法將 heroku.exe 所在目錄位置，設為 Windows 搜尋路徑之一"再重新啟動隨身碟的start_ipv4.bat。</p>
+<p><span><span style="background-color: #ffff00;">步驟五</span>:</span><span> </span>(<span>測試 heroku 執行</span>) 在命令列輸入 heroku version 若回應所使用的版本表示上述路徑設定已經成功。</p>
+<p><span><span style="background-color: #ffff00;">步驟六</span>:</span><span> </span>(<span>設定 heroku 代理主機</span>) 先前我們已經知道網路的應用包含 client 與 server，不同 client 採用不同的 proxy 設定與 server 連線，其中 firefox 作為 WWW 網路協定的 client，有其自己的網路 Proxy 設定，也可以直接使用操作系統的 Proxy 設定。</p>
+<p>Chrome 作為 WWW 網路協定的 client，目前 Windows 下的最新版，只能使用操作系統的 Proxy 設定。</p>
+<p>而 git 作為 git client 與 github server 連線的 Proxy 設定，則寫在 y:\home_ipv6 下的 .giconfig 中，  以 git config --global http.proxy "http://your_proxy:port" 進行設定。</p>
 <p>相同的道理 heroku cli 作為<span> </span><a href="https://heroku.com/">https://heroku.com</a><span> </span>伺服器的 client 端, 也有其 Proxy 的設定方式, 也就是在 start_ipv6.bat 中加入:</p>
 <div>
 <div class="syntaxhighlighter js" id="highlighter_880606">
@@ -52,10 +51,10 @@
 </table>
 </div>
 </div>
-<p><span><span style="background-color: #ffff00;">步驟七</span>:</span><span> </span>(<span>設定同步倉儲</span>) 針對利用 Heroku 同步 Github Pages 上的網站內容, 只需要透過 git remote add (Heroku 指令為 heroku git:remote -a heroku_倉儲_名稱, 之後只要在 heroku login 狀態下, 可以直接利用 git push) 在近端設定一個連線到 Heroku 倉儲的代號, 就能在每次更新 Github Pages 倉儲後, 再將內容同步至 Heroku. 網際內容管理課程將使用兩種 Heroku app 設定, 也就是靜態網頁與動態網頁:</p>
+<p><span><span style="background-color: #ffff00;">步七驟</span>:</span><span> </span>(<span>設定同步倉儲</span>) 利用 Heroku 同步 Github Pages 上的網站內容，只需透過 git remote add (Heroku 指令為 heroku git:remote -a heroku_倉儲_名稱，之後只要在 heroku login 狀態下，可以直接利用 git push) 在近端設定一個連線到 Heroku 倉儲的代號，就能在每次更新 Github Pages 倉儲後，順便將內容同步至 Heroku。網際內容管理課程將使用兩種 Heroku app 設定，也就是靜態網頁與動態網頁:</p>
 <p>靜態網頁 - 採用 php 方式部署, 讓 Heroku 將靜態網頁視為 PHP 程式, 利用 index.php 跳轉到 index.html</p>
 <p>動態網頁 - 讓 Heroku 執行 cmsimde/wsgi.py 的方式進行雲端伺服.</p>
-<p><span>步驟八:</span><span> </span>(<span>以 git 進行提交推送</span>) 利用 heroku git:remote -a 設定的同步倉儲其推送名稱內定為 "heroku", 使用者只要使用 git push heroku 就可以將改版內容推送到對應的 Heroku app 倉儲.</p>
+<p><span><span style="background-color: #ffff00;">步驟八</span>:</span><span> </span>(<span>以 git 進行提交推送</span>) 利用 heroku git:remote -a 設定的同步倉儲其推送名稱內定為 "heroku"，使用者只要使用 git push heroku 就可將改版內容推送到對應的 Heroku app 倉儲。</p>
 <p>指令操作步驟:</p>
 <div>
 <div class="syntaxhighlighter py" id="highlighter_733726">
