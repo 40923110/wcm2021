@@ -123,7 +123,7 @@ img.add_border {
                             <li><a href="./../blog/index.html">blog</a></li>
                         </ul>
                       </li>
-                     <li><a href='About.html'>About</a><li><a href='小組成員.html'>小組成員</a><li class='has-children'><a href='每周上課進度.html'>每周上課進度</a><ul class='dropdown'><li><a href='W1-W2.html'>W1-W2</a><li><a href='W3.html'>W3</a><li><a href='W4.html'>W4</a><li><a href='W5.html'>W5</a><li><a href='W6.html'>W6</a><li><a href='W7.html'>W7</a><li><a href='W8.html'>W8</a><li><a href='W9.html'>W9</a><li><a href='W10.html'>W10</a><li><a href='W11.html'>W11</a><li><a href='W12.html'>W12</a><li><a href='W13.html'>W13</a><li><a href='W14.html'>W14</a><li><a href='W15.html'>W15</a><li><a href='W16.html'>W16</a></li></ul><li><a href='網路直播.html'>網路直播</a></li>
+                     <li><a href='About.html'>About</a><li><a href='小組成員.html'>小組成員</a><li class='has-children'><a href='每周上課進度.html'>每周上課進度</a><ul class='dropdown'><li><a href='W1-W2.html'>W1-W2</a><li><a href='W3.html'>W3</a><li><a href='W4.html'>W4</a><li><a href='W5.html'>W5</a><li><a href='W6.html'>W6</a><li><a href='W7.html'>W7</a><li><a href='W8.html'>W8</a><li><a href='W9.html'>W9</a><li><a href='W10.html'>W10</a><li><a href='W11.html'>W11</a><li><a href='W12.html'>W12</a><li><a href='W13.html'>W13</a><li><a href='W14.html'>W14</a><li><a href='W15.html'>W15</a><li><a href='W16.html'>W16</a></li></ul><li><a href='網路環境.html'>網路環境</a><li><a href='Heroku 網站.html'>Heroku 網站</a><li><a href='網路直播.html'>網路直播</a><li><a href='RoboDK 執行.html'>RoboDK 執行</a></li>
                       </ul>
                 </nav>
               </div>
@@ -135,7 +135,140 @@ img.add_border {
           
         </header>
     <div id="tipue_search_content">W3 << <a href='W3.html'>Previous</a> <a href='W5.html'>Next</a> >> W5<br /><h1>W4</h1>
-<p>處理前三週遇到的問題</p>
+<p>1.處理前三週遇到的問題</p>
+<p><span>2.簡要說明網際內容管理課程開課緣由, 以及課程目標.</span><br/><span>其次說明 wcm2021 Topic0 專案執行目的.</span></p>
+<p><span>3.說明如何從特定主機, 利用 requests 送出 post 參數後取回 html, 並以 bs4 解讀後利用指令要求 firefox 檢視傳回資料.</span></p>
+<p><span>下面為教室使用範例</span></p>
+<p><span>綜一館0810:</span></p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">import requests
+import bs4
+# for os.environ and os.system
+import os
+# for geting html file path
+import pathlib
+ 
+# for pythn 3.9
+
+ 
+'''
+url:  'jclassroom_ajax.php',
+data: { pselyr: pselyr, pselclssroom: pselclssroom },
+'''
+semester = '1092'
+classroomno = 'BGA0810'
+column = True
+ 
+if semester == None:
+    semester = '1092'
+if classroomno == None:
+    # BGA0810 電腦輔助設計室
+    classroomno = 'BGA0810'
+     
+headers = {'X-Requested-With': 'XMLHttpRequest'}
+ 
+url = 'https://qry.nfu.edu.tw/jclassroom_ajax.php'
+post_var = {'pselyr': semester, 'pselclssroom': classroomno}
+ 
+result = requests.post(url, data = post_var, headers = headers)
+ 
+soup = bs4.BeautifulSoup(result.content, 'lxml')
+ 
+# 先除掉所有 anchor
+for a in soup.findAll('a'):
+    # bs3 語法
+    #a.replaceWithChildren()
+    # bs4 語法, 將標註與內容拆開
+    a.unwrap()
+ 
+# 根據輸出設定, 取出 class='tbcls' 的 table 資料
+table = soup.find('table', {'class': 'tbcls'})
+ 
+# 重建 table, 設定邊線為 1 pixel
+output = "&lt;table border='1'&gt;"
+ 
+for i in table.contents:
+    # 利用 replace 復原  
+    output += str(i).replace("&amp;nbsp", " ")
+output += "&lt;/table&gt;"
+#print(output)
+ 
+# 將 output 寫入 w1_classroom.html
+fileName = "w1_classroom.html"
+with open(fileName, "w", encoding="utf-8") as file:
+    file.write(output)
+# 利用 os.system() 以 default browser 開啟 w1_class_local.html
+filePath = pathlib.Path(__file__).parent.absolute()
+#print(filePath)
+# set firefox as default browser and start url to open html file
+os.system("start file:///" + str(filePath) + "\\" + fileName)</pre>
+<p><br/><br/>接下來再按Tools，再按Go就會在瀏覽器打開教室使用時間表</p>
+<p><img alt="" height="626" src="./../images/W4-3.png" width="451"/></p>
+<p>然後只要把程式碼裡的"BGA0810"改為想要找的教室代碼，<span>按Tools，再按Go就會在瀏覽器打開你要找的教室使用時間表。</span></p>
+<p><span>以下為範例:</span></p>
+<p><span><img alt="" height="419" src="./../images/W4-5.jpg" width="408"/></span></p>
+<p><span>下面為程式碼</span></p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">import requests
+import bs4
+# for os.environ and os.system
+import os
+# for geting html file path
+import pathlib
+
+# for pythn 3.9
+
+
+'''
+url: 'jclassroom_ajax.php',
+data: { pselyr: pselyr, pselclssroom: pselclssroom },
+'''
+semester = '1092'
+classroomno = 'BGA0640'
+column = True
+
+if semester == None:
+semester = '1092'
+if classroomno == None:
+# BGA0810 電腦輔助設計室
+classroomno = 'BGA0810'
+
+headers = {'X-Requested-With': 'XMLHttpRequest'}
+
+url = 'https://qry.nfu.edu.tw/jclassroom_ajax.php'
+post_var = {'pselyr': semester, 'pselclssroom': classroomno}
+
+result = requests.post(url, data = post_var, headers = headers)
+
+soup = bs4.BeautifulSoup(result.content, 'lxml')
+
+# 先除掉所有 anchor
+for a in soup.findAll('a'):
+# bs3 語法
+#a.replaceWithChildren()
+# bs4 語法, 將標註與內容拆開
+a.unwrap()
+
+# 根據輸出設定, 取出 class='tbcls' 的 table 資料
+table = soup.find('table', {'class': 'tbcls'})
+
+# 重建 table, 設定邊線為 1 pixel
+output = "&lt;table border='1'&gt;"
+
+for i in table.contents:
+# 利用 replace 復原
+output += str(i).replace("&amp;nbsp", " ")
+output += "&lt;/table&gt;"
+#print(output)
+
+# 將 output 寫入 w1_classroom.html
+fileName = "w1_classroom.html"
+with open(fileName, "w", encoding="utf-8") as file:
+file.write(output)
+# 利用 os.system() 以 default browser 開啟 w1_class_local.html
+filePath = pathlib.Path(__file__).parent.absolute()
+#print(filePath)
+# set firefox as default browser and start url to open html file
+os.system("start file:///" + str(filePath) + "\\" + fileName)</pre>
+<p><br/><br/></p>
 <br />W3 << <a href='W3.html'>Previous</a> <a href='W5.html'>Next</a> >> W5</div>
         
     <!-- footer -->
